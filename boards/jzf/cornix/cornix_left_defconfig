@@ -33,4 +33,10 @@ CONFIG_SPI=n
 CONFIG_EC11=y
 CONFIG_EC11_TRIGGER_GLOBAL_THREAD=y
 
+# --- stuck key対策 ---
+# 高速入力時にイベント送信キューが溢れるとrelease欠落でキーが押しっぱなしになる
+CONFIG_ZMK_SPLIT_BLE_PERIPHERAL_POSITION_QUEUE_SIZE=20
+# 送信出力 0dBm→+8dBm でパケット落ち自体を減らす
+CONFIG_BT_CTLR_TX_PWR_PLUS_8=y
+
 # vim: set ft=kconfig:
