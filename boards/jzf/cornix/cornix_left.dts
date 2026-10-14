@@ -11,14 +11,15 @@
  * Battery calibration (LEFT half). See README.md "Battery calibration".
  * Nominal full-ohms is 2806000. Lower = reports lower %, higher = higher %.
  *
- * Current value: 2783000 (~-0.8% vs nominal).
- * Why: at a simultaneous full charge the left half measured ~4.23 V while
- * the right measured ~4.19 V, i.e. left read ~34 mV high and stuck at the
- * 100% clamp. Trimming full-ohms down brings the left reading in line with
- * the right so both track together instead of pinning at 100%.
+ * Current value: 2806000 (nominal, same as right).
+ * History: 2026-05-31 trimmed to 2783000 (~-0.8%) because the left half
+ * read ~34 mV high at full charge and pinned at the 100% clamp. That trim
+ * then left the half topping out at ~99%, so on 2026-10-15 it was reverted
+ * to nominal to re-observe the behaviour. Re-trim here if 100% pinning
+ * returns (see README for the procedure).
  */
 &vbatt {
-    full-ohms = <2783000>;
+    full-ohms = <2806000>;
 };
 
 // vim: set ft=dts:

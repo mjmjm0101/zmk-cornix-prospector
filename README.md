@@ -108,7 +108,7 @@ Each half has its own `full-ohms` value:
 
 | Half  | File                                          | Current value | Notes                              |
 | ----- | --------------------------------------------- | ------------- | ---------------------------------- |
-| Left  | `boards/jzf/cornix/cornix_left.dts`  | `2783000`     | ~-0.8% vs nominal (trimmed, see below) |
+| Left  | `boards/jzf/cornix/cornix_left.dts`  | `2806000`     | Nominal (trim of 2783000 reverted 2026-10-15; see below) |
 | Right | `boards/jzf/cornix/cornix_right.dts` | `2806000`     | Nominal (reference half)               |
 
 Nominal hardware value: `2000000 + 806000 = 2806000` (`output-ohms` stays
@@ -127,9 +127,9 @@ ratio of (desired mV / currently-reported mV) and rebuild + reflash that
 half. Example: reading is 34 mV too high at 4226 mV →
 `2806000 × (4192 / 4226) ≈ 2783000`.
 
-### Why left is trimmed
+### History of the left trim
 
-At a simultaneous full charge the two halves measured:
+At a simultaneous full charge (2026-05-31) the two halves measured:
 
 - Left  ≈ **4.23 V** (read ~34 mV / ~0.8% high → sat above the 4.20 V
   clamp → stuck at 100%).
@@ -137,8 +137,14 @@ At a simultaneous full charge the two halves measured:
 
 Both cells are effectively full; the difference is within normal resistor
 / charge-IC tolerance, but it was enough to pin the left half at 100%.
-Trimming the left `full-ohms` down ~0.8% aligns it with the right so both
-track together.
+The left `full-ohms` was trimmed down ~0.8% (`2783000`) to align it with
+the right.
+
+With that trim the left half then stopped short of 100% (topped out
+around 99%, since the trimmed reading no longer reaches the 4200 mV
+clamp). On 2026-10-15 the trim was reverted to nominal (`2806000`) to
+re-observe the behaviour. If 100% pinning returns, a smaller trim
+(somewhere between `2783000` and `2806000`) is the next thing to try.
 
 ### Re-measuring (diagnostic trick)
 
